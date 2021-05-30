@@ -9,6 +9,7 @@ services:
 
   node-app:
     build: .
+    image: bunlaikun/node_app
     environment:
       - PORT=3000
     depends_on:
