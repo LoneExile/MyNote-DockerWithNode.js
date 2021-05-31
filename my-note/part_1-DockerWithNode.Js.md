@@ -58,7 +58,7 @@ now you go localhost to see
 touch Dockerfile
 ```
 
-```docker
+```properties
 FROM node
 #1 set working dir to ./app
 WORKDIR /app
