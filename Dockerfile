@@ -1,6 +1,7 @@
 FROM node
 WORKDIR /app
-COPY package.json . 
+# Caching
+COPY package.json .  
 RUN npm install
 ARG NODE_ENV
 COPY . ./
