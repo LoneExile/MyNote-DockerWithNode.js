@@ -1,5 +1,5 @@
----
 ## Connect container (recap)
+
 ```properties
 npm init -y
 npm i express mongoose
@@ -22,7 +22,8 @@ touch ./controllers/postController.js ./models/postModel.js ./routes/postRoute.j
 },
 ```
 
-#### index.js 
+#### index.js
+
 ```javascript
 const express = require('express')
 const mongoose = require('mongoose')
@@ -63,13 +64,16 @@ const port = process.env.PORT || 3000
 
 app.listen(port, console.log('listening on port ${port}'))
 // app.listen(port, () => console.log("listening on port ${port}"));
-
 ```
-#### .env 
+
+#### .env
+
 ```
 PORT=4000
 ```
-#### .dockerignore 
+
+#### .dockerignore
+
 ```
 node\_modules
 Dockerfile
@@ -78,7 +82,9 @@ Dockerfile
 .gitignore
 docker-compose\*
 ```
-#### docker-compose.yml 
+
+#### docker-compose.yml
+
 ```yaml
 version: '3'
 services:
@@ -102,7 +108,9 @@ services:
 volumes:
   mongo-db:
 ```
-#### docker-compose.prod.yml 
+
+#### docker-compose.prod.yml
+
 ```yaml
 version: '3'
 services:
@@ -115,7 +123,9 @@ services:
       - NODE_ENV=production
     command: node index.js
 ```
-#### docker-compose.dev.yml 
+
+#### docker-compose.dev.yml
+
 ```yaml
 version: '3'
 services:
@@ -137,11 +147,13 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=Moo
       - MONGO_INITDB_ROOT_PASSWORD=password
 ```
-#### Dockerfile 
+
+#### Dockerfile
+
 ```docker
 FROM node
 WORKDIR /app
-COPY package.json . 
+COPY package.json .
 RUN npm install
 ARG NODE_ENV
 COPY . ./
@@ -149,7 +161,9 @@ ENV PORT 3000
 EXPOSE $PORT
 CMD ["node", "index.js"] # can overwrite it in any composefile
 ```
+
 #### ./config/config.js
+
 ```javascript
 module.exports = {
   MONGO_IP: process.env.MONGO_IP || 'mongo',
@@ -158,9 +172,13 @@ module.exports = {
   MONGO_PASSWORD: process.env.MONGO_PASSWORD,
 }
 ```
+
 ---
-## Build CRUD 
+
+## Build CRUD
+
 #### ./controllers/postController.js
+
 ```javascript
 const Post = require('../models/postModel')
 
@@ -250,9 +268,10 @@ exports.deletePost = async (req, res, next) => {
     })
   }
 }
-
 ```
-#### ./models/postModels.js 
+
+#### ./models/postModels.js
+
 ```javascript
 const mongoose = require('mongoose')
 
@@ -269,9 +288,10 @@ const postSchema = new mongoose.Schema({
 
 const Post = mongoose.model('Post', postSchema)
 module.exports = Post
-
 ```
-#### ./routes/route.js 
+
+#### ./routes/route.js
+
 ```javascript
 const express = require('express')
 
@@ -289,10 +309,12 @@ router
   .delete(postController.deletePost)
 
 module.exports = router
-
 ```
+
 #### index.js
-add 
+
+add
+
 - `const postRouter = require('./routes/postRoute')`
 - `app.use(express.json())`
 - `app.use('/posts', postRouter)`
@@ -331,7 +353,7 @@ const connectWithRetry = () => {
 
 connectWithRetry()
 
-app.use(express.json())  // <<<<<
+app.use(express.json()) // <<<<<
 
 app.get('/', (req, res) => {
   res.send('<h1>Hi There joker ok</h1>')
@@ -342,18 +364,20 @@ const port = process.env.PORT || 3000
 
 app.listen(port, console.log('listening on port ${port}'))
 // app.listen(port, () => console.log("listening on port ${port}"));
-
 ```
 
-## Add  user model
+## Add user model
 
 ```properties
 touch ./models/userModel.js ./controllers/authController.js ./routes/userRoute.js
 
 npm i bcryptjs
 ```
-### Regis & Login 
+
+### Regis & Login
+
 #### userModel.js
+
 ```javascript
 const mongoose = require('mongoose')
 
@@ -374,6 +398,7 @@ module.exports = User
 ```
 
 #### authController.js
+
 ```javascript
 const User = require('../models/userModel')
 
@@ -393,8 +418,9 @@ exports.signUp = async (req, res) => {
 ```
 
 #### userRoute.js
+
 ```javascript
-const express = require('express');
+const express = require('express')
 
 const authController = require('../controllers/authController')
 
@@ -404,9 +430,13 @@ router.post('/signup', authController.signUp)
 
 module.exports = router
 ```
+
 ---
+
 #### index.js
+
 add
+
 - `const userRouter = require('./routes/userRoute')`
 - `app.use('/api/v1/user', userRouter)`
 
@@ -457,18 +487,20 @@ const port = process.env.PORT || 3000
 
 app.listen(port, console.log('listening on port ${port}'))
 // app.listen(port, () => console.log("listening on port ${port}"));
-
 ```
 
 #### authController.js (add bcryptjs to password)
+
 add
+
 - const bcrypt = require('bcryptjs')
 - const { username, password } = req.body
 - const hashpassword = await bcrypt.hash(password, 12)
 - const newUser = await User.create({
-      username,
-      password: hashpassword,
-    })
+  username,
+  password: hashpassword,
+  })
+
 ```javascript
 const User = require('../models/userModel')
 
@@ -477,7 +509,7 @@ const bcrypt = require('bcryptjs')
 exports.signUp = async (req, res) => {
   const { username, password } = req.body
   try {
-		const hashpassword = await bcrypt.hash(password, 12)
+    const hashpassword = await bcrypt.hash(password, 12)
     const newUser = await User.create({
       username,
       password: hashpassword,
@@ -494,8 +526,11 @@ exports.signUp = async (req, res) => {
   }
 }
 ```
+
 ---
+
 #### authController.js add login (compare name pass)
+
 ```javascript
 const User = require('../models/userModel')
 
@@ -552,6 +587,7 @@ exports.login = async (req, res) => {
 ```
 
 #### userRoute.js (add route to login)
+
 ```javascript
 const express = require('express')
 const authController = require('../controllers/authController')
@@ -560,13 +596,18 @@ router.post('/signup', authController.signUp)
 router.post('/login', authController.login)
 module.exports = router
 ```
+
 ---
+
 ### Add Sessions & Connect-Redis
+
 https://www.npmjs.com/package/redis
 https://www.npmjs.com/package/connect-redis
 
 #### docker-compose.yml
+
 https://hub.docker.com/_/redis
+
 ```yaml
 version: '3'
 services:
@@ -592,10 +633,10 @@ services:
 
 volumes:
   mongo-db:
-
 ```
 
 - docker know what change
+
 ```properties
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 ```
@@ -610,12 +651,13 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build -V
 - https://www.npmjs.com/package/express-session
 
 #### index.js ( add redis-session)
+
 ```javascript
 const express = require('express')
 const mongoose = require('mongoose')
 
 const session = require('express-session') // <<---
-const redis = require('redis');
+const redis = require('redis')
 let RedisStore = require('connect-redis')(session)
 
 const {
@@ -625,13 +667,14 @@ const {
   MONGO_PORT,
   REDIS_URL, // <<---
   SESSION_SECRET, // <<---
-	REDIS_PORT, // <<---
+  REDIS_PORT, // <<---
 } = require('./config/config')
 
-let redisClient = redis.createClient({ // <<---
+let redisClient = redis.createClient({
+  // <<---
   host: REDIS_URL,
   port: REDIS_PORT,
-}) 
+})
 
 const postRouter = require('./routes/postRoute')
 const userRouter = require('./routes/userRoute')
@@ -658,17 +701,21 @@ const connectWithRetry = () => {
 
 connectWithRetry()
 
-app.use(session({  // <<---
-  store: new RedisStore({client:redisClient}),
-  secret: SESSION_SECRET,
-  cookie: { //https://www.npmjs.com/package/express-session --> ## Options
-    secure: false,
-    resave: false,
-    saveUninitialized: false,
-    httpOnly: true, // javascript can't access?
-    maxAge: 30000
-  }
-}))
+app.use(
+  session({
+    // <<---
+    store: new RedisStore({ client: redisClient }),
+    secret: SESSION_SECRET,
+    cookie: {
+      //https://www.npmjs.com/package/express-session --> ## Options
+      secure: false,
+      resave: false,
+      saveUninitialized: false,
+      httpOnly: true, // javascript can't access?
+      maxAge: 30000,
+    },
+  })
+)
 // ---
 app.use(express.json())
 
@@ -685,6 +732,7 @@ app.listen(port, console.log('listening on port ${port}'))
 ```
 
 #### config.js ( config var for session)
+
 ```javascript
 module.exports = {
   MONGO_IP: process.env.MONGO_IP || 'mongo',
@@ -699,6 +747,7 @@ module.exports = {
 ```
 
 #### docker-compose.dev.yml
+
 ```yaml
 version: '3'
 services:
@@ -723,17 +772,20 @@ services:
 ```
 
 #### redis cli docker
+
 ```properties
 docker exec -it [redis container] redis-cli
 # see what sesion we have
-KEYS *  
+KEYS *
 # get info that key
 GET ["key"]
 ```
 
 #### authController.js (send info user to redis container)
+
 1. `req.session.user = user`
 2. `req.session.user = newUser`
+
 ```javascript
 const User = require('../models/userModel')
 
@@ -772,7 +824,7 @@ exports.login = async (req, res) => {
     }
     const isCorrect = await bcrypt.compare(password, user.password)
     if (isCorrect) {
-      req.session.user = user  // <<<----
+      req.session.user = user // <<<----
       res.status(200).json({
         status: 'success isCorrect',
       })
@@ -792,12 +844,14 @@ exports.login = async (req, res) => {
 ```
 
 ### MiddleWare (Check is user login)
+
 ```properties
 mkdir middleware
 touch ./middleware/authMiddleware.js
 ```
 
-#### authMiddleware 
+#### authMiddleware
+
 ```javascript
 const protect = (req, res, next) => {
   const { user } = req.session
@@ -813,7 +867,9 @@ module.exports = protect
 ```
 
 #### postRoute.js
+
 - protect path you want
+
 ```javascript
 const express = require('express')
 
@@ -835,31 +891,34 @@ router
   .delete(protect, postController.deletePost)
 
 module.exports = router
-
-
 ```
 
 #### connect mongo directly through container
+
 - note: we can add port to docker-compose.yml like in our app port 3000(in this case)
-	==BUT it less security==
-<img src="https://github.com/Wolowit/DockerWithNode.js-Express/blob/main/my-note/img/1.png" />
+  ==BUT it less security==
+  <img src="https://github.com/Wolowit/DockerWithNode.js-Express/blob/main/my-note/img/1.png" />
 
 - multi container
-	==it not good if we hace alot app==
-<img src="https://github.com/Wolowit/DockerWithNode.js-Express/blob/main/my-note/img/2.png" />
+  ==it not good if we hace alot app==
+  <img src="https://github.com/Wolowit/DockerWithNode.js-Express/blob/main/my-note/img/2.png" />
 
 ##### Nginx ( load balancer)
+
 https://www.nginx.com/resources/glossary/load-balancing/
-- use #Nginx 
-<img src="https://github.com/Wolowit/DockerWithNode.js-Express/blob/main/my-note/img/3.png" />
+
+- use #Nginx
+  <img src="https://github.com/Wolowit/DockerWithNode.js-Express/blob/main/my-note/img/3.png" />
 
 ### Add nginx
+
 ```properties
 mkdir nginx
 touch ./nginx/default.conf
 ```
 
 #### ./nginx/default.conf
+
 ```properties
 server {
     listen 80;
@@ -877,7 +936,8 @@ server {
 }
 ```
 
-#### index.js  (edit this)
+#### index.js (edit this)
+
 ```javascript
 app.get('/api/v1', (req, res) => {
   res.send('<h1>Hi There joker ok</h1>')
@@ -885,6 +945,7 @@ app.get('/api/v1', (req, res) => {
 ```
 
 #### docker-compose.yml
+
 ```yaml
 version: '3'
 services:
@@ -918,13 +979,13 @@ volumes:
 ```
 
 #### docker-compose.dev.yml
+
 ```yaml
 version: '3'
 services:
-
   nginx:
     ports:
-      - "3000:80"
+      - '3000:80'
 
   node-app:
     build:
@@ -947,14 +1008,14 @@ services:
 ```
 
 #### docker-compose.prod.yml
+
 ```yaml
 version: '3'
 services:
-
   nginx:
     ports:
-      - "80:80"
-      
+      - '80:80'
+
   node-app:
     build:
       context: .
@@ -966,10 +1027,14 @@ services:
 ```
 
 #### Express behind proxies
+
 https://expressjs.com/en/guide/behind-proxies.html
+
 ##### index.js
+
 `app.enable('trust proxy')`
 `console.log('yeah it ran')`
+
 ```javascript
 const express = require('express')
 const mongoose = require('mongoose')
@@ -1018,7 +1083,7 @@ const connectWithRetry = () => {
 
 connectWithRetry()
 
-app.enable('trust proxy')  // <<<<<<<
+app.enable('trust proxy') // <<<<<<<
 
 app.use(
   session({
@@ -1048,26 +1113,32 @@ const port = process.env.PORT || 3000
 
 app.listen(port, console.log('listening on port ${port}'))
 // app.listen(port, () => console.log("listening on port ${port}"));
-
 ```
 
 ##### test nginx
+
 ```properties
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --scale node-app=2
 ```
 
 #### cors
+
 [==Middleware==](https://expressjs.com/en/guide/writing-middleware.html#writing-middleware-for-use-in-express-apps)
+
 - https://expressjs.com/en/guide/using-middleware.html#using-middleware
 - https://expressjs.com/en/resources/middleware/cors.html
 
 basically just allows your frontend to run on one domain and your backend api to run on a different domain because by default let's say your front end is hosted at www.google.com right and let's say your frontend sends a request to www.yahoo.com so let's say yahoo.com it's where our api exists well these are two dofferent domains by default our api will reject that request from our frontend so to allow these to be running on different domains we have to configure cors so that different domains can access our api
+
 ```properties
 npm install cors
 ```
+
 `const cors = require('cors')`
 `app.use(cors({}))`
+
 ##### index.js (add cors)
+
 ```javascript
 const express = require('express')
 const mongoose = require('mongoose')
@@ -1146,17 +1217,4 @@ const port = process.env.PORT || 3000
 
 app.listen(port, console.log('listening on port ${port}'))
 // app.listen(port, () => console.log("listening on port ${port}"));
-
 ```
-
-
-
-
- 
-
-
-
-
-
-
-
