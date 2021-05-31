@@ -7,11 +7,11 @@ services:
   node-app:
     deploy:
       replicas: 8
-    restart_policy:
-      condition: any
-    update_config:
-      parallelism: 2 # up 2 container per time
-      delay: 15s
+      restart_policy:
+        condition: any
+      update_config:
+        parallelism: 2 # up 2 container per time
+        delay: 15s
     build:
       context: .
       args:
