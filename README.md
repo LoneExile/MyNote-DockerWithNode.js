@@ -2,7 +2,7 @@
 
 What differs from the video is I used macOS and AWS.
 
-## my note from [Obsidian](http://obsidian.md/)
+## my note
 
 [part 1: Docker with Node.Js & Exprress](https://github.com/Wolowit/DockerWithNode.js-Express/blob/main/my-note/part_1-DockerWithNode.Js.md)
 
