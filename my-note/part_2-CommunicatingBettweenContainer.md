@@ -1,5 +1,7 @@
 ## Connect container (recap)
 
+[skip recap](https://github.com/Wolowit/DockerWithNode.js-Express/blob/main/my-note/part_2-CommunicatingBettweenContainer.md#build-crud)
+
 ```properties
 npm init -y
 npm i express mongoose
