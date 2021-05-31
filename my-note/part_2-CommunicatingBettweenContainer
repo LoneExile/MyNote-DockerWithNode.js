@@ -842,16 +842,16 @@ module.exports = router
 #### connect mongo directly through container
 - note: we can add port to docker-compose.yml like in our app port 3000(in this case)
 	==BUT it less security==
-![[Screen Shot 2021-05-27 at 12.24.29 PM.png]]
+<img src="https://github.com/Wolowit/DockerWithNode.js-Express/blob/main/my-note/img/1.png" />
 
 - multi container
 	==it not good if we hace alot app==
-![[Screen Shot 2021-05-27 at 12.24.06 PM.png]]
+<img src="https://github.com/Wolowit/DockerWithNode.js-Express/blob/main/my-note/img/2.png" />
 
 ##### Nginx ( load balancer)
 https://www.nginx.com/resources/glossary/load-balancing/
 - use #Nginx 
-![[Screen Shot 2021-05-27 at 12.31.09 PM.png]]
+<img src="https://github.com/Wolowit/DockerWithNode.js-Express/blob/main/my-note/img/3.png" />
 
 ### Add nginx
 ```properties

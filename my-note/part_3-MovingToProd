@@ -112,7 +112,7 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 https://youtu.be/ukdTGVVcqE0
 
 
-![[Screen Shot 2021-05-30 at 4.45.58 PM.png]]
+<img src="https://github.com/Wolowit/DockerWithNode.js-Express/blob/main/my-note/img/4.png" />
 
 - go to Public IPv4 address and play!
 
@@ -127,10 +127,10 @@ git pull
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build --no-deps node-app
 ```
 
-![[Screen Shot 2021-05-30 at 5.14.30 PM.png]]
+<img src="https://github.com/Wolowit/DockerWithNode.js-Express/blob/main/my-note/img/5.png" />
 
 #### Push docker image to docker hub
-![[Screen Shot 2021-05-30 at 5.16.15 PM.png]]
+<img src="https://github.com/Wolowit/DockerWithNode.js-Express/blob/main/my-note/img/6.png" />
 ```properties
 # in vscode
 docker image ls
